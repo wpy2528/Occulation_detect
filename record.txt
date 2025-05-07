@@ -1,0 +1,203 @@
+===============================================occu_lotion====================================
+class:[no_occu  occu]
+20231204-020254-regnety_004-224
+train:3000
+val:700
+*** Best metric: 94.68531468531468 (epoch 249)
+overall_accuracy:  0.9468531468531468
+overall_recall:  0.9232876712328767
+class_accuracy:  tensor([0.9714, 0.9233])
+class_recall:  tensor([0.9239, 0.9233])
+summary:
+94.6%/92%
+no_occu 97%/92%
+occu 92%/92%
+
+train:3200
+val:400
+*** Best metric: 96.68531468531468 (epoch 249)
+
+
+occu_colution
+20231213-201838-mobilenetv2_100-224
+未加预训练模型
+overall_accuracy:  0.9678321678321679
+overall_recall:  0.958904109589041
+class_accuracy:  tensor([0.9771, 0.9589])
+class_recall:  tensor([0.9580, 0.9589])
+
+oculotion_mobielev2_100.onnx
+onnx:
+overall_accuracy:  0.9594405594405594
+overall_recall:  0.9452054794520548
+class_accuracy:  tensor([0.9743, 0.9452])
+class_recall:  tensor([0.9446, 0.9452])
+
+mr527 int8:
+overall_accuracy:  0.6727272727272727
+overall_recall:  0.673972602739726
+class_accuracy:  tensor([0.6714, 0.6740])
+class_recall:  tensor([0.6638, 0.6740])
+
+
+
+20240205-110228-mobilenetv2_100-224
+加了预训练模型
+*** Best metric: 97.90209816885995 (epoch 43)
+  input_size: (3, 224, 224)
+        interpolation: bicubic
+        mean: (0.485, 0.456, 0.406)
+        std: (0.229, 0.224, 0.225)
+        crop_pct: 0.875
+        crop_mode: center
+overall_accuracy:  0.9790209790209791
+overall_recall:  0.9753424657534246
+class_accuracy:  tensor([0.9829, 0.9753])
+class_recall:  tensor([0.9745, 0.9753])
+
+onnx:
+overall_accuracy:  0.965034965034965
+overall_recall:  0.958904109589041
+class_accuracy:  tensor([0.9714, 0.9589])
+class_recall:  tensor([0.9577, 0.9589])
+
+mr527
+uint8
+direct resize bilear
+Overall Accuracy: 0.846154
+Overall Recall: 0.934247
+Class Accuracy: 0.754286, 0.934247
+Class Recall: 0.916667, 0.934247
+
+int16
+Overall Accuracy: 0.61958
+Overall Recall: 0.767123
+Class Accuracy: 0.465714, 0.767123
+Class Recall: 0.657258, 0.767123
+
+pcq
+Overall Accuracy: 0.732867
+Overall Recall: 0.983562
+Class Accuracy: 0.471429, 0.983562
+Class Recall: 0.964912, 0.983562
+
+
+
+
+center crop resize bicubic
+Overall Accuracy: 0.837762
+Overall Recall: 0.942466
+Class Accuracy: 0.728571, 0.942466
+Class Recall: 0.923913, 0.942466
+
+
+使用预训练模型
+20240205-135542-resnet18-224
+*** Best metric: 98.6013991349227 (epoch 32)
+        input_size: (3, 224, 224)
+        interpolation: bicubic
+        mean: (0.485, 0.456, 0.406)
+        std: (0.229, 0.224, 0.225)
+        crop_pct: 1.0
+        crop_mode: center
+overall_accuracy:  0.9818181818181818
+overall_recall:  0.9808219178082191
+class_accuracy:  tensor([0.9829, 0.9808])
+class_recall:  tensor([0.9801, 0.9808])
+
+onnx
+overall_accuracy:  0.9804195804195804
+overall_recall:  0.9808219178082191
+class_accuracy:  tensor([0.9800, 0.9808])
+class_recall:  tensor([0.9800, 0.9808])
+resnet的onnx没降，，mobienetv2降低了1个点左右
+
+mr527
+Overall Accuracy: 0.472727
+Overall Recall: 0.915069
+Class Accuracy: 0.0114286, 0.915069
+Class Recall: 0.114286, 0.915069
+掉的更离谱
+
+train--2024/3/27
+/media/wpy/558e3a8b-7a8f-4603-a6fb-20c87dbd584b/zhangzhaofeng/occulotion_datasets/occu_dataset_3_27/train_data
+20240327-165759-mobilenetv2_100-224
+*** Best metric: 99.26340601060696 (epoch 13)
+
+
+
+
+===============================================black_dark====================================
+black_dark
+train:7700
+val:2300
+
+20231211-211542-regnety_004-224
+overall_accuracy:  1.0
+overall_recall:  1.0
+class_accuracy:  tensor([1., 1.])
+class_recall:  tensor([1., 1.])
+
+
+black_dark
+train:7700
+val:2300
+20231213-190519-mobilenetv2_100-224
+overall_accuracy:  1.0
+overall_recall:  1.0
+class_accuracy:  tensor([1., 1.])
+class_recall:  tensor([1., 1.])
+
+
+
+black_dark
+train:7700
+val:2300
+transfer png to jpg
+20231214-184702-mobilenetv2_100-224
+
+
+
+
+
+
+
+
+*** Best metric: 100.0 (epoch 6)
+20240205-154811-mobilenetv2_100-224
+
+
+
+onnx
+overall_accuracy:  1.0
+overall_recall:  1.0
+class_accuracy:  tensor([1., 1.])
+class_recall:  tensor([1., 1.])
+
+mr527
+uint8
+Overall Accuracy: 0.398879
+Overall Recall: 0.0706667
+Class Accuracy: 1, 0.0706667
+Class Recall: 0.370086, 0.0706667
+依然有问题，加了预训练模型之后
+
+pcq
+Overall Accuracy: 0.83743
+Overall Recall: 0.75
+Class Accuracy: 0.997558, 0.75
+Class Recall: 0.685403, 0.75
+
+
+20240307-112323-mobilenetv2_100-224
+overall_accuracy:  0.999196572040707
+overall_recall:  0.9988262910798122
+class_accuracy:  tensor([0.9995, 0.9988])
+class_recall:  tensor([0.9990, 0.9988])
+
+
+
+===============================================charge====================================
+20240405-185356-mobilenetv2_100-224
+*** Best metric: 99.9426002104659 (epoch 36)
+
