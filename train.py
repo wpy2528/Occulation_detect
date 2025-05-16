@@ -120,7 +120,7 @@ group.add_argument('--pretrained', action='store_true', default=False,
                    help='Start with pretrained version of specified network (if avail)')
 # /home/zzf/pytorch-image-model-20231023/pytorch-image-models-main/resnet18-5c106cde.pth
 # /home/zzf/pytorch-image-model-20231023/pytorch-image-models-main/mobilenetv2_100_ra-b33bc2c4.pth
-group.add_argument('--initial-checkpoint', default='output/train/20250417-222324-resnet18-224/model_best.pth.tar', type=str, metavar='PATH',
+group.add_argument('--initial-checkpoint', default='output/train/20250515-180601-resnet18-224/model_best.pth.tar', type=str, metavar='PATH',
                    help='Initialize model from this checkpoint (default: none)')
 group.add_argument('--resume', default='', type=str, metavar='PATH',
                    help='Resume full model and optimizer state from checkpoint (default: none)')
@@ -128,7 +128,7 @@ group.add_argument('--no-resume-opt', action='store_true', default=False,
                    help='prevent resume of optimizer state when resuming model')
 group.add_argument('--num-classes', type=int, default=3, metavar='N',
                    help='number of label classes (Model default if None)')
-group.add_argument('--class-weight', type=float, default=[1.2, 1.0, 1.0], metavar='NC',
+group.add_argument('--class-weight', type=float, default=[1.0, 1.0, 1.2], metavar='NC',
                    help='the weights for label classes (if None will not using)')   # 设置类别权重
 group.add_argument('--gp', default=None, type=str, metavar='POOL',
                    help='Global pool type, one of (fast, avg, max, avgmax, avgmaxc). Model default if None.')
@@ -149,7 +149,7 @@ group.add_argument('--interpolation', default='', type=str, metavar='NAME',
                    help='Image resize interpolation type (overrides model)')
 group.add_argument('--epochs', type=int, default=300, metavar='N',
                    help='number of epochs to train (default: 300)')
-group.add_argument('-b', '--batch-size', type=int, default=256, metavar='N',
+group.add_argument('-b', '--batch-size', type=int, default=128, metavar='N',
                    help='Input batch size for training (default: 128)')
 group.add_argument('-vb', '--validation-batch-size', type=int, default=None, metavar='N',
                    help='Validation batch size override (default: None)')
@@ -178,6 +178,7 @@ group.add_argument('-PPM', '--PyrmaidPooling', default=False, type=bool, help='A
 group.add_argument('-SAFM', '--SpatialAttentionFusionModule', default=False, type=bool, help='Add SpatialAttentionFusionModule in the end of network')
 group.add_argument('-BEM', '--BoundaryEnhancementModule', default=False, type=bool, help='Add BoundaryEnhancementModule in the end of network')
 group.add_argument('--SE', default='se', type=str, help='Using SE Module for network:(se,ese,eca,ecam,ceca,ge,gc,gca,cbam,lcbam')
+group.add_argument('--RFB', default=True, type=bool, help='Using Receptive Field Block for network')
 group.add_argument('--CBAM', default=False, type=bool, help='Using CBAM Module for network')
 group.add_argument('--frozen-layer', default=[], type=list, help='The frozen layer index')
 
@@ -475,6 +476,7 @@ def main():
         use_GSconv=args.GSconv,
         use_DSconv=args.DSconv,
         use_CBAM=args.CBAM,
+        use_RFB=args.RFB,
         **args.model_kwargs,
     )
     if args.head_init_scale is not None:

@@ -14,6 +14,8 @@ from .create_act import create_act_layer, get_act_layer, get_act_fn
 from .PPM import PyramidPoolingModule
 from .SAFM import SAFM
 from .BEM import BoundaryEnhancementModule
+from .SpatialAttention import SpatialAttentionModule
+from .RFB import RFBBlock
 from .create_attn import get_attn, create_attn
 from .create_conv2d import create_conv2d
 from .depthwise_conv import DepthWiseSeparableConv, GroupWiseSeparableConv

@@ -16,7 +16,8 @@ import torch.nn.functional as F
 
 from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from timm.layers import DropBlock2d, DropPath, AvgPool2dSame, BlurPool2d, GroupNorm, create_attn, get_attn, \
-    get_act_layer, get_norm_layer, create_classifier, DepthWiseSeparableConv, GroupWiseSeparableConv, DSConv2D, PyramidPoolingModule, SAFM, BoundaryEnhancementModule
+    get_act_layer, get_norm_layer, create_classifier, DepthWiseSeparableConv, GroupWiseSeparableConv, DSConv2D, \
+    PyramidPoolingModule, SAFM, BoundaryEnhancementModule, SpatialAttentionModule, RFBBlock
 from ._builder import build_model_with_cfg
 from ._manipulate import checkpoint_seq
 from ._registry import register_model, generate_default_cfgs, register_model_deprecations
@@ -68,23 +69,6 @@ class ChannelAttentionModule(nn.Module):
         avg_out = self.f2(self.relu(self.f1(self.avg_pool(x))))
         max_out = self.f2(self.relu(self.f1(self.max_pool(x))))
         out = self.sigmoid(avg_out + max_out)
-        return out
-
-
-class SpatialAttentionModule(nn.Module):
-    def __init__(self, kernel_size=7):
-        super(SpatialAttentionModule, self).__init__()
-        assert kernel_size in (3, 7), 'kernel size must be 3/7'
-        padding = 3 if kernel_size == 7 else 1
-        self.conv2d = nn.Conv2d(in_channels=2, out_channels=1, kernel_size=kernel_size, stride=1, padding=padding,
-                                bias=False)
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, x):
-        avgout = torch.mean(x, dim=1, keepdim=True)
-        maxout, _ = torch.max(x, dim=1, keepdim=True)
-        out = torch.cat([avgout, maxout], dim=1)
-        out = self.sigmoid(self.conv2d(out))
         return out
 
 
@@ -432,7 +416,7 @@ def get_planes_from_basic_block(block):
     for name, layer in block.named_children():
         if isinstance(layer, nn.Conv2d) and name == 'conv2':
             # 返回 pointwise 层的输出通道数
-            return layer.pointwise.out_channels
+            return layer.out_channels
         elif isinstance(layer, DepthWiseSeparableConv) and name == 'conv2':
             # 返回 pointwise 层的输出通道数
             return layer.pointwise.out_channels
@@ -498,6 +482,7 @@ class ResNet(nn.Module):
             use_PPM=False,
             use_SAFM=False,
             use_BEM=False,
+            use_RFB=False
     ):
         """
         Args:
@@ -562,6 +547,7 @@ class ResNet(nn.Module):
         self.use_ppm_last_block = use_PPM
         self.use_safm_module = use_SAFM
         self.use_bem_module = use_BEM
+        self.use_rfb_block = use_RFB
 
         # Stem pooling. The name 'maxpool' remains for weight compatibility.
         if replace_stem_pool:
@@ -631,6 +617,9 @@ class ResNet(nn.Module):
         if use_BEM:
             self.bem = BoundaryEnhancementModule(inplanes)
 
+        if use_RFB:
+            self.rfb = RFBBlock(in_planes=512, out_planes=512)
+
         self.feature_info.extend(stage_feature_info)
 
         # Head (Pooling and Classifier)
@@ -683,6 +672,8 @@ class ResNet(nn.Module):
             x = self.layer4(x)
         if self.use_safm_module:
             x = self.safm(x)
+        if self.use_rfb_block:
+            x = self.rfb(x)
         return x
 
     def forward_head(self, x, pre_logits: bool = False):
