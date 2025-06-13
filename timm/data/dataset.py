@@ -93,10 +93,14 @@ class ImageDataset(data.Dataset):
                 raise e
         self._consecutive_errors = 0
         if self.img_mode and not self.load_bytes:
+<<<<<<< HEAD
             try:
                 img = img.convert(self.img_mode)
             except:
                 print(self.reader.filename(index))
+=======
+            img = img.convert(self.img_mode)
+>>>>>>> b46b557b2b78636d97c62ecb11541e61ef349921
         if random.random() < self.gamma_prob:
             gamma_value = random.uniform(*self.gamma_range)
             if gamma_value > 1:

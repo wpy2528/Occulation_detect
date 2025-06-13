@@ -80,7 +80,6 @@ parser.add_argument('--verbose', default=True, action='store_true',
 def main():
     args = parser.parse_args()
     args.output = "output/onnx/20250610-175033-resnet18-224.onnx"
-    args.pretrained = True
     if args.checkpoint:
         args.pretrained = False
 

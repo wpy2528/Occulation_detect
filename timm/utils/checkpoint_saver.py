@@ -109,10 +109,14 @@ class CheckpointSaver:
             'version': 2,  # version < 2 increments epoch before save
         }
         if self.args is not None:
+<<<<<<< HEAD
             try:
                 save_state['arch'] = self.args.model
             except:
                 save_state['arch'] = self.args.student_model
+=======
+            save_state['arch'] = self.args.model
+>>>>>>> b46b557b2b78636d97c62ecb11541e61ef349921
             save_state['args'] = self.args
         if self.amp_scaler is not None:
             save_state[self.amp_scaler.state_dict_key] = self.amp_scaler.state_dict()
