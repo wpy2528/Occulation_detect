@@ -1,0 +1,4 @@
+[core]
+    remote = wpy_remote
+['remote "wpy_remote"']
+    url = /data/DATA/DVC_dataset/
